@@ -36,3 +36,14 @@ class library:
         if author in None:
             self.add_author(book.author)
             author = self.db.get_author(book.author.name)
+
+        self.db.add_book(book.title, author[0], book.publication.year)
+
+    def remove_book(self, title):
+        self.db.remove_book(title)
+
+    def find_books_by_author(self, author_name):
+        rows = self.db.find_book_by_author(author_name) 
+        return [Book(title=row[0], author=Author(name=row[1], birth_year=None), publication_year=row[2]) for row in rows]
+    
+    # row = [('asd', 'pyshka', 1799), ()]
