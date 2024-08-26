@@ -148,17 +148,17 @@ class Pc:
     def info(self):
         print(f"Память - {self.memory}\nПроцессор - {self.cpu}")
 
-print("Введите число")
-num1 = int(input(": "))
+# print("Введите число")
+# num1 = int(input(": "))
 
-print("Введите второе число")
-num2 = int(input(": "))
+# print("Введите второе число")
+# num2 = int(input(": "))
 
-print("Введите знак")
-snak = input(": ")   
+# print("Введите знак")
+# snak = input(": ")   
 
 lil = Pc('1TB', 'intel i14800k', snak, num1, num2, 0)
-lil.make_computations()
+# lil.make_computations()
 
 class Laptop(Pc):
     def __init__(self, memory, cpu, snak, num1, num2, otvet, memory_card):
@@ -175,7 +175,7 @@ class Laptop(Pc):
     #     print(f"Карта памяти - ")
 lol = Laptop('1TB', 'intel i14800k', snak, num1, num2, 0, '1000gb')
 
-# print(lol.set_memory_card())
+print(lol.set_memory_card())
 
 
 
