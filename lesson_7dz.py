@@ -152,8 +152,6 @@ class Database:
             WHERE authors.name = ?
         ''', (author_name,))
         return cursor.fetchall()
-    
-
 
     def list_books(self):
         cursor = self.conn.cursor()
@@ -267,11 +265,7 @@ class Rectangle(Shape):
     print(result)  
 
 
-"""Создайте класс Car, который будет представлять автомобиль с маркой, моделью и годом выпуска.
-Создайте класс Garage, который будет управлять коллекцией автомобилей.
-Реализуйте методы для добавления автомобилей в гараж, удаления автомобиля по марке и модели, и вывода списка всех автомобилей в гараже.
-Напишите код, который создаст несколько объектов Car, добавит их в гараж, удалит один автомобиль, и выведет оставшиеся автомобили.
-"""
+
 
 class Car:
     def vop(self):
@@ -284,23 +278,41 @@ class Garage(Car):
 
     def __init__(self, gg_name='car.db'):
         self.con = sqlite3.connect(gg_name)
-        
-
-    
-        self.con.execute("""
-                    CREATE TABLE IF NOT EXISTS carr(
-                         id INTEGER PRIMARY KEY, 
-                         marka TEXT, 
-                         model TEXT, 
-                         gods TEXT)""")
+        self.cur = self.con.cursor()
+        self.cur.execute("""
+            CREATE TABLE IF NOT EXISTS carr(
+                id INTEGER PRIMARY KEY, 
+                marka TEXT, 
+                model TEXT, 
+                gods TEXT
+            )
+        """)
         
     def save_car(self):
-        cur = self.con.cursor()
-        cur.execute("INSERT INTO carr(marka, model, gods) VALUES (?, ?, ?)",
-                    (self.marka, self.model, self.gods))
+        self.cur.execute("INSERT INTO carr (marka, model, gods) VALUES (?, ?, ?)",
+                         (self.marka, self.model, self.gods))
         self.con.commit()
         print(f"Автомобиль {self.marka} {self.model} {self.gods} сохранен в базе данных.")
-        
+
+    def delete_marka(self, car_marka):  
+        self.cur.execute("DELETE FROM carr WHERE marka = ?", (car_marka,))
+        self.con.commit()
+        print(f"Автомобиль с маркой {car_marka} удален из базы данных")
+
+    def list_cars(self):
+        self.cur.execute("SELECT * FROM carr")
+        cars = self.cur.fetchall()
+        if cars:
+            print("Список автомобилей в базе данных: ")
+            for car in cars:
+                print(f"ID: {car[0]}, Марка: {car[1]}, Модель: {car[2]}, Год: {car[3]}")
+        else:
+            print("В базе данных нет автомобилей")
+
+
 garage = Garage()
 garage.vop()       
-garage.save_car()
+garage.save_car()   
+marka = input("Введите марку авто для удаления: ")
+garage.delete_marka(marka)
+garage.list_cars()
